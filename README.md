@@ -10,4 +10,4 @@ We present SAM4D, a multi-modal and temporal foundation model designed for promp
 
 ## Acknowledgement
 
-We gratefully acknowledge the developers of the following open-source projects and datasets, whose foundational tools enabled our research: [SAM2](https://github.com/facebookresearch/sam2), [Grounded-SAM-2](https://github.com/IDEA-Research/Grounded-SAM-2), [verl](https://github.com/volcengine/verl), [Waymo Open Dataset](https://waymo.com/open), [VDBFusion](https://github.com/PRBonn/vdbfusion), among others.
+We gratefully acknowledge the developers of the following open-source projects and datasets, whose foundational tools enabled our research: [SAM2](https://github.com/facebookresearch/sam2), [GroundingDINO](https://github.com/IDEA-Research/GroundingDINO), [Grounded-SAM-2](https://github.com/IDEA-Research/Grounded-SAM-2), [Waymo Open Dataset](https://waymo.com/open), [VDBFusion](https://github.com/PRBonn/vdbfusion), among others.
