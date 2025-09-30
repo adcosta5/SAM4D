@@ -12,3 +12,4 @@ checkpoints/*.pt
 .ipynb_checkpoints/
 waymo_out/
 checkpoints/
+data/samples

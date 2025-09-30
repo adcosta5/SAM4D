@@ -77,8 +77,8 @@ class SAM4DPredictor(SAM4DBase):
             img_paths=None,
             pts_paths=None,
             metas=None,
-            offload_video_to_cpu=False,
-            offload_state_to_cpu=False,
+            offload_video_to_cpu=True,
+            offload_state_to_cpu=True,
             # async_loading_frames=False,
     ):
         data_dict = self.get_data(img_paths, pts_paths, metas)
