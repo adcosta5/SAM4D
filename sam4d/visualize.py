@@ -151,7 +151,7 @@ def pts_draw_masks_and_prompts(pcd, masks, instance_ids, point_prompts=None, box
 
 
 class Open3dPCPlotter(object):
-    def __init__(self, viz_cfg=None, axis_size=5.0):
+    def __init__(self, viz_cfg, axis_size=5.0): #viz_cfg=None
         self.geometries = dict()
         self.geometries['axis'] = o3d.geometry.TriangleMesh.create_coordinate_frame(size=axis_size)
 
