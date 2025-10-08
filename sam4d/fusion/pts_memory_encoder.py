@@ -129,6 +129,24 @@ class MaskDownSampler(nn.Module):
         self.encoder = nn.Sequential(*self.encoder)
 
     def forward(self, x):
+        # Ensure sparse features use float32 (torchsparse CUDA kernels may not
+        # support bf16/fp16) and that the SparseTensor is on the same device
+        # as the module parameters before invoking the conv kernels.
+        # Get device of the first parameter (if any)
+        first_param = None
+        for p in self.parameters():
+            first_param = p
+            break
+        param_device = first_param.device if first_param is not None else None
+
+        # If x has feature tensor 'F', ensure dtype and device match expectations
+        if hasattr(x, "F") and x.F is not None:
+            if x.F.dtype != torch.float32:
+                x.F = x.F.float()
+            if param_device is not None and x.F.device != param_device:
+                # SparseTensor implements .to(device)
+                x = x.to(param_device)
+
         return self.encoder(x)
 
 

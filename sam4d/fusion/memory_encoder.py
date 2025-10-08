@@ -44,6 +44,24 @@ class MemoryEncoder(nn.Module):
         # sigmoid, so that less domain shift from gt masks which are bool
         if not skip_mask_sigmoid:
             masks = F.sigmoid(masks)
+        # Ensure masks live on the same device as the downsampler module
+        # (the module may be on CUDA while masks are still on CPU). Move
+        # masks to the downsampler's device before running it to avoid
+        # runtime errors like 'Input type (torch.FloatTensor) and weight type (torch.cuda.FloatTensor)'.
+        downsampler_device = None
+        for p in self.mask_downsampler.parameters():
+            downsampler_device = p.device
+            break
+        # If the downsampler has no parameters (unlikely), fall back to this module's device
+        if downsampler_device is None:
+            try:
+                downsampler_device = next(self.parameters()).device
+            except StopIteration:
+                downsampler_device = masks.device
+
+        if masks.device != downsampler_device:
+            masks = masks.to(downsampler_device)
+
         masks = self.mask_downsampler(masks)
 
         ## Fuse pix_feats and downsampled masks in case the visual features are on CPU, cast them to CUDA

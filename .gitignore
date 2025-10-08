@@ -13,3 +13,5 @@ checkpoints/*.pt
 waymo_out/
 checkpoints/
 data/samples
+tmp.png
+notebooks/output_road.png

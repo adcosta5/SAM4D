@@ -670,6 +670,41 @@ class SAM4DPredictor(SAM4DBase):
             )
             yield frame_idx, obj_ids, video_res_masks
 
+    def propagate_in_video_n_frames(
+            self,
+            inference_state,
+            start_frame_idx=None,
+            num_frames=100,
+            reverse=False,
+    ):
+        """
+        Convenience wrapper: propagate for approximately `num_frames` frames (count-based).
+
+        The existing `propagate_in_video` expects `max_frame_num_to_track` as an offset
+        (end = start + offset). This helper converts a user-friendly frame count into
+        the appropriate offset and forwards the call to `propagate_in_video`.
+
+        Examples:
+            # process 100 frames starting from frame 0
+            for fidx, ids, masks in predictor.propagate_in_video_n_frames(inf_state, start_frame_idx=0, num_frames=100):
+                ...
+
+        Note: num_frames=1 will process exactly one frame; num_frames=100 will process
+        frames start..start+99 (subject to video length).
+        """
+        if num_frames is None:
+            max_frame_num_to_track = None
+        else:
+            # convert count -> offset (1 frame -> 0, N frames -> N-1)
+            max_frame_num_to_track = max(0, int(num_frames) - 1)
+
+        return self.propagate_in_video(
+            inference_state,
+            start_frame_idx=start_frame_idx,
+            max_frame_num_to_track=max_frame_num_to_track,
+            reverse=reverse,
+        )
+
     @torch.inference_mode()
     def clear_all_prompts_in_frame(
             self, inference_state, frame_idx, obj_id, need_output=True

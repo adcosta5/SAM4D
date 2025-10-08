@@ -145,7 +145,7 @@ def pts_draw_masks_and_prompts(pcd, masks, instance_ids, point_prompts=None, box
                 pc_plotter.add_spheres(prpt_coords[i:i + 1], color=tmp_clr, size=0.3)
 
     screenshot = './tmp.png'
-    pc_plotter.visualize(screenshot=screenshot)
+    pc_plotter.visualize(screenshot=screenshot) #If screenshot is None opens a window with the Open3D.
     out_img = cv2.imread(screenshot)
     return out_img
 
